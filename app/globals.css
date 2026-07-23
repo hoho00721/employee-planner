@@ -1,0 +1,466 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* App color tokens */
+  --app-accent:  #1565C0;
+  --app-accent2: #1976D2;
+  --app-green:   #2E7D32;
+
+  /* Safe area heights — used in JS-free calculations */
+  --header-h: 60px;
+  --bottom-nav-h: 64px;
+}
+
+/* =============================================
+   RESET & BASE
+   ============================================= */
+@theme inline {
+  --font-sans: 'Cairo', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    /* Eliminate 300ms tap delay on all Android WebViews */
+    touch-action: manipulation;
+  }
+  * { @apply border-border outline-ring/50; }
+
+  html {
+    direction: rtl;
+    /* Prevent font scaling on landscape rotation (Android) */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Fill the whole viewport on Android Chrome */
+    height: 100%;
+    height: -webkit-fill-available;
+    /* Suppress overscroll glow */
+    overscroll-behavior: none;
+  }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0; padding: 0;
+    /* dvh fixes the Android Chrome toolbar shift */
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+  }
+
+  /* Remove tap flash on interactive elements */
+  button, a, [role="button"], label {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  /* ── Input zoom prevention on Android ──────────────
+     Android WebView zooms in when an input's font-size
+     is < 16px. We clamp at 16px but keep visual size
+     via transform-scale if needed.                     */
+  input, textarea, select {
+    font-size: 16px !important;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  /* Smooth momentum scrolling on Android */
+  .scroll-smooth-touch {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* =============================================
+   ANDROID EDGE-TO-EDGE / SAFE AREAS
+   ============================================= */
+/* Status-bar inset — works with Capacitor
+   overlaysWebView: true AND standard browser safe-area. */
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Increase minimum status-bar padding so header
+   text never hides under the camera cut-out.    */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-top {
+    padding-top: max(env(safe-area-inset-top, 0px), 0px);
+  }
+}
+
+/* =============================================
+   APP BACKGROUND
+   ============================================= */
+.app-bg {
+  background: linear-gradient(160deg, #0D1B3E 0%, #0F2550 30%, #112240 60%, #0A1628 100%);
+  min-height: 100dvh;
+  width: 100%;
+  position: relative;
+}
+
+/* =============================================
+   MOBILE SHELL
+   ─ Full-width on every Android phone (320-430px)
+   ─ Centered on tablets / desktop
+   ============================================= */
+.mobile-shell {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  /* Use dvh so the shell fills the screen even when
+     Chrome's address bar is visible or hidden.    */
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* Isolate stacking context for fixed children   */
+  isolation: isolate;
+}
+
+/* =============================================
+   GLASS CARDS
+   ============================================= */
+.glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-card-strong {
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+.accent-card {
+  background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #0D47A1 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(21, 101, 192, 0.40);
+}
+
+.green-card {
+  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 60%, #388E3C 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(46, 125, 50, 0.35);
+}
+
+/* =============================================
+   GLOW BLOBS
+   ============================================= */
+.glow-blob {
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* =============================================
+   BOTTOM NAV BAR
+   ─ Fixed to the bottom of the mobile shell.
+   ─ Respects Android gesture-nav bar via
+     env(safe-area-inset-bottom).
+   ============================================= */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  z-index: 30;
+  background: rgba(10, 22, 40, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  /* Gesture nav bar clearance */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* =============================================
+   SCROLLBAR HIDE
+   ============================================= */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =============================================
+   FORM INPUTS — flat style
+   ─ font-size 16px prevents Android auto-zoom
+   ============================================= */
+.app-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 12px 16px;
+  color: #fff;
+  font-family: 'Cairo', sans-serif;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+  /* Disable Android browser's autofill yellow tint */
+  -webkit-text-fill-color: #fff;
+}
+.app-input::placeholder { color: rgba(255, 255, 255, 0.30); }
+.app-input:focus { border-color: #1976D2; }
+
+.app-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 12px 16px;
+  color: #fff;
+  font-family: 'Cairo', sans-serif;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.app-select:focus { border-color: #1976D2; }
+.app-select option { background: #0F2550; color: #fff; }
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+.btn-primary {
+  background: linear-gradient(135deg, #1565C0, #1976D2);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  /* min-height 48px ensures tap targets meet Android guidelines */
+  min-height: 48px;
+  padding: 13px 24px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  box-shadow: 0 4px 20px rgba(21, 101, 192, 0.45);
+  width: 100%;
+}
+.btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: 'Cairo', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 48px;
+  padding: 13px 24px;
+  transition: background 0.2s;
+  width: 100%;
+}
+.btn-secondary:active { background: rgba(255, 255, 255, 0.12); }
+
+/* =============================================
+   TOGGLE
+   ============================================= */
+.toggle-track {
+  width: 48px; height: 28px;
+  border-radius: 14px;
+  transition: background 0.25s;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  /* Increase tap area without changing visual size */
+  padding: 0;
+}
+.toggle-thumb {
+  width: 22px; height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  transition: left 0.25s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* =============================================
+   LIST ROW
+   ============================================= */
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* min-height 52px for comfortable touch targets */
+  min-height: 52px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: background 0.15s;
+}
+.list-row:active { background: rgba(255, 255, 255, 0.09); }
+
+/* =============================================
+   ANIMATIONS
+   ============================================= */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: fadeSlideUp 0.32s ease forwards; }
+
+/* =============================================
+   MODAL / SHEET OVERLAY
+   ─ Prevent body scroll-through on Android when
+     a bottom sheet / modal is open.
+   ============================================= */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* =============================================
+   BOTTOM SHEET HANDLE
+   ============================================= */
+.sheet-handle {
+  width: 40px; height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.20);
+  margin: 10px auto 4px;
+}
+
+/* =============================================
+   CAPACITOR / ANDROID WEBVIEW EXTRAS
+   ============================================= */
+/* Suppress Android overscroll glow at page edges */
+html, body {
+  overscroll-behavior-y: none;
+  -webkit-overscroll-behavior-y: none;
+}
+
+/* Capacitor status-bar overlay (overlaysWebView: true) */
+.capacitor-status-bar-pad {
+  padding-top: env(safe-area-inset-top, 24px);
+}
+
+/* Hide the Next.js dev overlay portal in preview */
+nextjs-portal { display: none !important; }
+
+/* =============================================
+   RESPONSIVE — very small screens (< 360px)
+   ─ Xiaomi Redmi, some budget Android phones
+   ============================================= */
+@media (max-width: 359px) {
+  .mobile-shell { max-width: 100%; }
+
+  /* Tighten horizontal padding so nothing clips */
+  .px-responsive { padding-left: 10px !important; padding-right: 10px !important; }
+
+  /* Slightly smaller bottom-nav labels */
+  .bottom-nav span[style*="fontSize:10"] { font-size: 9px !important; }
+}
+
+/* =============================================
+   RESPONSIVE — large phones / small tablets (> 480px)
+   ─ Samsung Galaxy Tab, Pixel Tablet
+   ============================================= */
+@media (min-width: 481px) {
+  .mobile-shell {
+    /* Slight shadow to separate from tablet background */
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.5);
+  }
+}

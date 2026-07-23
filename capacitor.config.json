@@ -1,0 +1,47 @@
+{
+  "appId": "com.birech.employeeplanner",
+  "appName": "منظم الموظف",
+  "webDir": "out",
+  "server": {
+    "androidScheme": "https",
+    "url": "https://13000-ild7j5lb8vh3cv3e4509v-82b888ba.preview.happyseeds.space",
+    "cleartext": false,
+    "allowNavigation": [
+      "*.happyseeds.space",
+      "*.happyseeds.ai"
+    ]
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#0D1B3E",
+    "useLegacyBridge": false,
+    "buildOptions": {
+      "keystorePath": "release.keystore",
+      "keystoreAlias": "employee-planner",
+      "releaseType": "APK"
+    }
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "launchAutoHide": true,
+      "backgroundColor": "#0D1B3E",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "StatusBar": {
+      "style": "dark",
+      "backgroundColor": "#0D1B3E",
+      "overlaysWebView": true
+    },
+    "Keyboard": {
+      "resize": "body",
+      "resizeOnFullScreen": true
+    }
+  }
+}
